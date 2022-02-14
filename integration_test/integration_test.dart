@@ -3,18 +3,16 @@ import 'package:integration_test/integration_test.dart';
 import 'package:myapp/main.dart' as app;
 
 void main() {
-  final binding = IntegrationTestWidgetsFlutterBinding
-      .ensureInitialized() as IntegrationTestWidgetsFlutterBinding;
+  final binding = IntegrationTestWidgetsFlutterBinding.ensureInitialized()
+      as IntegrationTestWidgetsFlutterBinding;
 
   binding.framePolicy = LiveTestWidgetsFlutterBindingFramePolicy.fullyLive;
 
-  group('login', () {
-    testWidgets('Basic login',
-            (WidgetTester tester) async {
-          app.main();
+  group('test', () {
+    testWidgets('test', (WidgetTester tester) async {
+      app.main();
 
-          await tester.pumpAndSettle(const Duration(seconds: 4));
-
-            });
+      await tester.pumpAndSettle(const Duration(seconds: 4));
+    });
   });
 }

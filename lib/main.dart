@@ -32,7 +32,13 @@ class MyApp extends StatelessWidget {
     //   '/': (context) => const HomePage(),
     // });
 
-    // Only works for `flutter run`, not for `flutter test`
+    // Custom InformationParser and RouterDelegate works for both `flutter run` and `flutter test`
+    // return MaterialApp.router(
+    //   routeInformationParser: HomeRouteInformationParser(),
+    //   routerDelegate: HomeRouterDelegate(),
+    // );
+
+    // auto_route works for `flutter run` but not for `flutter test`
     return MaterialApp.router(
       routeInformationParser: router.defaultRouteParser(),
       routerDelegate: AutoRouterDelegate(router),
@@ -54,5 +60,53 @@ class HomePage extends StatelessWidget {
         );
       }),
     );
+  }
+}
+
+// Below are simple custom Navigator 2.0 classes to demonstrate it works with those.
+
+class HomeRoutePath {
+  HomeRoutePath.home();
+}
+
+class HomeRouterDelegate extends RouterDelegate<HomeRoutePath>
+    with ChangeNotifier, PopNavigatorRouterDelegateMixin<HomeRoutePath> {
+  final GlobalKey<NavigatorState> _navigatorKey;
+
+  HomeRouterDelegate() : _navigatorKey = GlobalKey<NavigatorState>();
+
+  @override
+  Widget build(BuildContext context) {
+    return Navigator(
+      key: navigatorKey,
+      pages: const [
+        MaterialPage(
+          key: ValueKey('BooksListPage'),
+          child: HomePage(),
+        ),
+      ],
+      onPopPage: (route, result) {
+        return true;
+      },
+    );
+  }
+
+  @override
+  GlobalKey<NavigatorState> get navigatorKey => _navigatorKey;
+
+  @override
+  Future<void> setNewRoutePath(HomeRoutePath configuration) async {}
+}
+
+class HomeRouteInformationParser extends RouteInformationParser<HomeRoutePath> {
+  @override
+  Future<HomeRoutePath> parseRouteInformation(
+      RouteInformation routeInformation) async {
+    return HomeRoutePath.home();
+  }
+
+  @override
+  RouteInformation restoreRouteInformation(HomeRoutePath path) {
+      return const RouteInformation(location: '/');
   }
 }
