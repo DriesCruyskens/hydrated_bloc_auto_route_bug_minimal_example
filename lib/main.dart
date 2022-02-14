@@ -27,6 +27,11 @@ class MyApp extends StatelessWidget {
     // Works for both `flutter run` and `flutter test`
     // return const MaterialApp(home: HomePage(),);
 
+    // Works for both `flutter run` and `flutter test`
+    // return MaterialApp(initialRoute: '/', routes: {
+    //   '/': (context) => const HomePage(),
+    // });
+
     // Only works for `flutter run`, not for `flutter test`
     return MaterialApp.router(
       routeInformationParser: router.defaultRouteParser(),
@@ -44,7 +49,9 @@ class HomePage extends StatelessWidget {
       body: Builder(builder: (context) {
         ProfileCubit().fetchProfile();
 
-        return const Center(child: Text("test"),);
+        return const Center(
+          child: Text("test"),
+        );
       }),
     );
   }
